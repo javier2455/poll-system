@@ -1,8 +1,10 @@
 import express, { json } from 'express'
 import morgan from 'morgan'
-import { corsMiddleware } from './middlewares/cors.js'
+import cokkieParser from 'cookie-parser'
+import { corsMiddleware } from './utils/cors.js'
 import { moviesRouter } from './routes/movies.js'
 import { authRouter } from './routes/auth.js'
+import { pollsRouter } from './routes/poll.js'
 import { connectDB } from './db.js'
 
 const app = express()
@@ -12,10 +14,12 @@ app.use(json())
 app.use(corsMiddleware())
 
 app.use(morgan('dev'))
+app.use(cokkieParser())
 
 // Router
 app.use('/movies', moviesRouter)
 app.use('/auth', authRouter)
+app.use('/polls', pollsRouter)
 
 // Connecting to DB
 connectDB()
