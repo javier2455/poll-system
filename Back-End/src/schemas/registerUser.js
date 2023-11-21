@@ -1,7 +1,7 @@
 import z from 'zod'
-import { USER_FIELDS, USER_ROLES } from '../constants/strings.js'
+import { USER_FIELDS } from '../constants/strings.js'
 
-const userSchema = z.object({
+const registerUserSchema = z.object({
   username: z.string({
     invalid_type_error: USER_FIELDS.USERNAME_INVALID_TYPE,
     required_error: USER_FIELDS.USERNAME_REQUIERED
@@ -15,17 +15,9 @@ const userSchema = z.object({
     .string({
       required_error: USER_FIELDS.PASSWORD_REQUIERED
     })
-    .min(8),
-  avatar: z.string(),
-  role: z.string(
-    z.enum(USER_ROLES.USER || USER_ROLES.POWER_USER || USER_ROLES.ADMIN)
-  )
+    .min(8)
 })
 
-export function validateUser(object) {
-  return userSchema.safeParse(object)
-}
-
-export function validatePartialUser(object) {
-  return userSchema.partial().safeParse(object)
+export function validateRegisterUser(object) {
+  return registerUserSchema.safeParse(object)
 }

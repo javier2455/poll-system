@@ -8,7 +8,8 @@ export const AUTH_ERRORS = {
 export const AUTH_SUCCESS = {
   CORRECTS_CREDENTIALS: 'Correct credentials',
   LOGOUT: 'User logout of the system',
-  PROFILE_INFO: 'User profile'
+  PROFILE_INFO: 'User profile',
+  USER_CREATED: 'New user created'
 }
 
 export const USER_FIELDS = {
