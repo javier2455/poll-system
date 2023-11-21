@@ -37,3 +37,22 @@ export const USER_ROLES = {
   POWER_USER: 'POWER USER',
   ADMIN: 'ADMIN'
 }
+
+export const POLL_FIELDS = {
+  TITLE_REQUIERED: 'Title is a required field',
+  TITLE_INVALID_TYPE: 'Title must be a string',
+  FIELDS_REQUIERED: 'Fields is a required field',
+  FIELDS_INVALID_TYPE: 'Fields must be an array of object',
+  STATE_REQUIERED: 'State is a required field',
+  STATE_INVALID_TYPE: 'State must be a string'
+}
+
+export const POLL_MESSAGES = {
+  SATISFACTORY_SEARCH: 'Satisfactory_search',
+  POLL_NOT_FOUND: 'Poll not found',
+  POLLS_NOT_FOUND: 'Polls not found',
+  POLL_CREATED: 'New poll created',
+  POLL_UPDATED: 'New poll updated',
+  POLL_DELETED: 'New poll deleted',
+  POLL_INVALID_ROLE: 'Invalid role'
+}
