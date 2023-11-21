@@ -15,7 +15,9 @@ const registerUserSchema = z.object({
     .string({
       required_error: USER_FIELDS.PASSWORD_REQUIERED
     })
-    .min(8)
+    .min(8, {
+      message: USER_FIELDS.PASSWORD_MIN
+    })
 })
 
 export function validateRegisterUser(object) {

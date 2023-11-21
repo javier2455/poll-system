@@ -15,10 +15,12 @@ const userSchema = z.object({
     .string({
       required_error: USER_FIELDS.PASSWORD_REQUIERED
     })
-    .min(8),
+    .min(8, {
+      message: USER_FIELDS.PASSWORD_MIN
+    }),
   avatar: z.string(),
   role: z.string(
-    z.enum(USER_ROLES.USER || USER_ROLES.POWER_USER || USER_ROLES.ADMIN)
+    z.enum([USER_ROLES.USER, USER_ROLES.POWER_USER, USER_ROLES.ADMIN])
   )
 })
 
