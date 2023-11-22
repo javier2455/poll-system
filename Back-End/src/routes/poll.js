@@ -10,6 +10,12 @@ pollsRouter.post('/', authRequired, getUserRole, PollController.create)
 pollsRouter.get('/:id', authRequired, getUserRole, PollController.getById)
 pollsRouter.delete('/:id', authRequired, getUserRole, PollController.delete)
 pollsRouter.put('/:id', authRequired, getUserRole, PollController.update)
+pollsRouter.put(
+  '/vote/:id/:inputId',
+  authRequired,
+  PollController.updatePollByVote
+)
+pollsRouter.put('/close_vote/:id', authRequired, PollController.closePoll)
 
 // pollsRouter.get('/', authRequired, UserController.getAll)
 // pollsRouter.post('/', authRequired, getUserRole, UserController.create)

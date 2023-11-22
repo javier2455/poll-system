@@ -6,9 +6,7 @@ const pollSchema = z.object({
     invalid_type_error: POLL_FIELDS.TITLE_INVALID_TYPE,
     required_error: POLL_FIELDS.TITLE_REQUIERED
   }),
-  fields: z.array(
-    z.object({ name: z.string(), result: z.number().positive() })
-  ),
+  fields: z.array(z.object({ name: z.string(), result: z.number().min(0) })),
   // fullname: z.number().int().min(1900).max(2024),
   state: z.string({
     invalid_type_error: POLL_FIELDS.STATE_INVALID_TYPE,

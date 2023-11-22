@@ -2,8 +2,7 @@ import mongoose from 'mongoose'
 
 const field = new mongoose.Schema({
   name: {
-    type: String,
-    unique: true
+    type: String
   },
   result: {
     type: Number

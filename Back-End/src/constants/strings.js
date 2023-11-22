@@ -51,8 +51,13 @@ export const POLL_MESSAGES = {
   SATISFACTORY_SEARCH: 'Satisfactory_search',
   POLL_NOT_FOUND: 'Poll not found',
   POLLS_NOT_FOUND: 'Polls not found',
+  POLLS_NOT_UPDATED: 'Polls not updated',
   POLL_CREATED: 'New poll created',
-  POLL_UPDATED: 'New poll updated',
-  POLL_DELETED: 'New poll deleted',
-  POLL_INVALID_ROLE: 'Invalid role'
+  POLL_UPDATED: 'Poll updated',
+  POLL_DELETED: 'Poll deleted',
+  POLL_CLOSED: 'Poll closed',
+  POLL_INVALID_ROLE: 'Invalid role',
+  POLL_VOTE_UPDATED: 'Voting was completed',
+  POLL_USER_ALREADY_VOTE: 'This user has already cast a vote',
+  POLL_MISSING_INPUT_USERTHATVOTE: 'Input (userthatvote) is missing'
 }
