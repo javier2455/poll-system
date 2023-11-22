@@ -136,6 +136,11 @@ export class PollController {
 
   static closePoll = async (req, res) => {
     try {
+      if (req.role === 'USER') {
+        return res
+          .status(403)
+          .json({ message: USERS_MESSAGES.USER_INVALID_ROLE })
+      }
       const closedPoll = await PollModel.closePoll({
         id: req.params.id
       })

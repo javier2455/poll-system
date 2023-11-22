@@ -2,7 +2,6 @@ import express, { json } from 'express'
 import morgan from 'morgan'
 import cokkieParser from 'cookie-parser'
 import { corsMiddleware } from './utils/cors.js'
-import { moviesRouter } from './routes/movies.js'
 import { authRouter } from './routes/auth.js'
 import { userRouter } from './routes/user.js'
 import { pollsRouter } from './routes/poll.js'
@@ -18,7 +17,6 @@ app.use(morgan('dev'))
 app.use(cokkieParser())
 
 // Router
-app.use('/movies', moviesRouter)
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
 app.use('/polls', pollsRouter)

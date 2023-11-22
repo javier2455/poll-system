@@ -15,7 +15,12 @@ pollsRouter.put(
   authRequired,
   PollController.updatePollByVote
 )
-pollsRouter.put('/close_vote/:id', authRequired, PollController.closePoll)
+pollsRouter.put(
+  '/close_poll/:id',
+  authRequired,
+  getUserRole,
+  PollController.closePoll
+)
 
 // pollsRouter.get('/', authRequired, UserController.getAll)
 // pollsRouter.post('/', authRequired, getUserRole, UserController.create)
