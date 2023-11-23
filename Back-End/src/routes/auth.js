@@ -9,3 +9,4 @@ authRouter.post('/register', AuthController.register)
 authRouter.post('/logout', AuthController.logout)
 
 authRouter.get('/profile', authRequired, AuthController.profile)
+authRouter.get('/verify-token', AuthController.verifyToken)

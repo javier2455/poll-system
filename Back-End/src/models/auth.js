@@ -1,10 +1,15 @@
-import { USER_ROLES } from '../constants/strings.js'
+import { AUTH_ERRORS, USER_ROLES } from '../constants/strings.js'
 import User from './mongodb/user.js'
 import bcrypt from 'bcryptjs'
 
 export class AuthModel {
   static register = async ({ user }) => {
     const { username, fullname, password } = user
+
+    const userFound = await User.findOne({ username })
+    if (userFound) {
+      return { data: false, message: [AUTH_ERRORS.USERNAME_EXIST] }
+    }
 
     const hashPassword = await bcrypt.hash(password, 10)
 

@@ -1,7 +1,9 @@
 export const AUTH_ERRORS = {
   USER_NOT_FOUND: 'User not found',
   USERS_NOT_FOUND: 'Users not found',
+  USERS_NOT_AUTHORIZED: 'This user is not authorized',
   INCORRECT_PASSWORD: 'Incorrect password',
+  USERNAME_EXIST: 'Username in use',
   INVALID_TOKEN: 'Invalid token',
   NOT_TOKEN: 'No token, authorization denied'
 }

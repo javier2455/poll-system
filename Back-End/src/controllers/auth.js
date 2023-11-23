@@ -1,8 +1,10 @@
 import { createAccessToken } from '../utils/jwt.js'
+import jwt from 'jsonwebtoken'
 import { AUTH_ERRORS, AUTH_SUCCESS } from '../constants/strings.js'
 import { AuthModel } from '../models/auth.js'
 import { validateAuthentication } from '../schemas/auth.js'
 import { validateRegisterUser } from '../schemas/registerUser.js'
+import { TOKEN_SECRET } from '../config.js'
 
 export class AuthController {
   static register = async (req, res) => {
@@ -10,11 +12,14 @@ export class AuthController {
       const validatedFields = validateRegisterUser(req.body)
 
       if (validatedFields.error) {
-        return res
-          .status(400)
-          .json({ error: JSON.parse(validatedFields.error.message) })
+        return res.status(400).json({
+          message: validatedFields.error.errors.map((err) => err.message)
+        })
       }
       const result = await AuthModel.register({ user: validatedFields.data })
+      if (result.data === false) {
+        return res.status(404).json({ message: result.message })
+      }
       const token = await createAccessToken({ id: result._id })
       res.cookie('token', token)
 
@@ -38,16 +43,18 @@ export class AuthController {
       const validatedFields = validateAuthentication(req.body)
 
       if (validatedFields.error) {
-        return res
-          .status(400)
-          .json({ error: JSON.parse(validatedFields.error.message) })
+        return res.status(400).json({
+          message: validatedFields.error.errors.map((err) => err.message)
+        })
       }
       const userFound = await AuthModel.login({ user: validatedFields.data })
       if (userFound.userfound === false) {
-        return res.status(404).json({ message: AUTH_ERRORS.USER_NOT_FOUND })
+        return res.status(404).json({ message: [AUTH_ERRORS.USER_NOT_FOUND] })
       }
       if (userFound.correctPassword === false) {
-        return res.status(404).json({ message: AUTH_ERRORS.INCORRECT_PASSWORD })
+        return res
+          .status(404)
+          .json({ message: [AUTH_ERRORS.INCORRECT_PASSWORD] })
       }
 
       const token = await createAccessToken({ id: userFound._id })
@@ -70,14 +77,45 @@ export class AuthController {
 
   static logout = async (req, res) => {
     res.cookie('token', '', { expires: new Date(0) })
-    return res.status(200).json({ message: AUTH_SUCCESS.LOGOUT })
+    return res.status(200).json({ message: [AUTH_SUCCESS.LOGOUT] })
+  }
+
+  static verifyToken = async (req, res) => {
+    const token = req.cookies
+    if (!token) {
+      return res.status(401).json({ message: [AUTH_ERRORS.NOT_TOKEN] })
+    }
+
+    jwt.verify(token, TOKEN_SECRET, async (err, user) => {
+      if (err) {
+        return res
+          .status(401)
+          .json({ message: [AUTH_ERRORS.USERS_NOT_AUTHORIZED] })
+      }
+
+      const userFound = await AuthModel.login({ user: user.id })
+      if (userFound.userfound === false) {
+        return res.status(404).json({ message: [AUTH_ERRORS.USER_NOT_FOUND] })
+      }
+
+      return res.status(200).json({
+        message: [AUTH_SUCCESS.CORRECTS_CREDENTIALS],
+        data: {
+          id: userFound._id,
+          username: userFound.username,
+          fullname: userFound.fullname,
+          avatar: userFound.avatar,
+          role: userFound.role
+        }
+      })
+    })
   }
 
   static profile = async (req, res) => {
     try {
       const userFound = await AuthModel.profile({ id: req.user.id })
       if (userFound.userfound === false) {
-        return res.status(404).json({ message: AUTH_ERRORS.USER_NOT_FOUND })
+        return res.status(404).json({ message: [AUTH_ERRORS.USER_NOT_FOUND] })
       }
       return res.status(200).json({
         message: AUTH_SUCCESS.PROFILE_INFO,

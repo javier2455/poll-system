@@ -99,7 +99,11 @@ export class PollController {
       if (validatedFields.error) {
         return res
           .status(400)
-          .json({ error: JSON.parse(validatedFields.error.message) })
+          .json({
+            message: JSON.parse(
+              validatedFields.error.error.map((err) => err.message)
+            )
+          })
       }
       const pollUpdated = await PollModel.update({
         id: req.params.id,

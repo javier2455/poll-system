@@ -43,6 +43,7 @@ export class PollModel {
 
   static update = async ({ id, input }) => {
     input.usersThatVoted = []
+    input.state = 'MODIFIED'
     const pollUpdated = await Poll.findByIdAndUpdate(id, input, {
       new: true
     })
