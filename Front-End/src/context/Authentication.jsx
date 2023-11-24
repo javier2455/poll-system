@@ -18,12 +18,14 @@ export const AuthenticationProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [isAuth, setIsAuth] = useState(false)
   const [errors, setErrors] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const signUp = async (theUser) => {
     try {
       const res = await registerRequest(theUser)
       console.log(res.data)
       setUser(res.data)
+      sessionStorage.setItem("user", res.data);
       setIsAuth(true)
     } catch (error) {
       console.log(error.response)
@@ -36,6 +38,7 @@ export const AuthenticationProvider = ({ children }) => {
       const res = await loginRequest(theUser)
       console.log(res.data)
       setUser(res.data)
+      sessionStorage.setItem("user", res.data);
       setIsAuth(true)
     } catch (error) {
       console.log(error.response)
@@ -55,18 +58,27 @@ export const AuthenticationProvider = ({ children }) => {
   useEffect(() => {
     async function checkLogin() {
       const cookies = Cookies.get()
-      if (cookies.token) {
-        try {
-          const res = await verifyTokenRequest(cookies.token)
-          if (!res.data) setIsAuth(false)
-          setIsAuth(true)
-          setUser(res.data)
-        } catch (error) {
-          console.log(error)
+      if (!cookies.token) {
+        setIsAuth(false)
+        setLoading(false)
+        return setUser(null)
+      }
+      try {
+        const res = await verifyTokenRequest(cookies.token)
+        if (!res.data) {
+          setLoading(false)
           setIsAuth(false)
-          setUser(null)
-          // setErrors(error.response.data.message)
+          return
         }
+        setIsAuth(true)
+        setUser(res.data)
+        setLoading(false)
+      } catch (error) {
+        console.log(error)
+        setIsAuth(false)
+        setUser(null)
+        setLoading(false)
+        // setErrors(error.response.data.message)
       }
     }
     checkLogin()
@@ -74,7 +86,7 @@ export const AuthenticationProvider = ({ children }) => {
 
   return (
     <AuthenticationContext.Provider
-      value={{ signIn, signUp, user, isAuth, errors }}
+      value={{ signIn, signUp, user, isAuth, errors, loading }}
     >
       {children}
     </AuthenticationContext.Provider>

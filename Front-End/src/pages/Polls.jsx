@@ -1,5 +1,7 @@
+import { AuthenticationHook } from '../context/Authentication'
+
 export default function Polls() {
-  return (
-    <div>Polls</div>
-  )
+  const { user } = AuthenticationHook()
+  console.log(user)
+  return <div>Polls</div>
 }
