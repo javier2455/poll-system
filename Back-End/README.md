@@ -2,6 +2,8 @@
 
 Se utilizó para el desarrollo de la API "Nodejs" con su framework "Express", se utilizó el patrón de diseño MVC (Modelo-Vista-Controlador), se creó una estructura de carpetas acorde a las especificaciones del ejercicio.
 
+### Estructura de carpetas y funcionamiento
+
 #### src
 Carpeta fuente del proyecto
 #### src/constants
